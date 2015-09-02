@@ -1,0 +1,17 @@
+void Main()
+{
+    using(var reader = new AudioFileReader(@"D:\Audio\Music\Example.mp3"))
+    {
+        var fadeOut = new DelayFadeOutSampleProvider(reader);
+        fadeOut.BeginFadeOut(10000, 2000);
+        using(var player = new WaveOutEvent())
+        {
+            player.Init(fadeOut);
+            player.Play();
+            while(player.PlaybackState == PlaybackState.Playing)
+            {
+                Thread.Sleep(500);
+            }
+        }
+    }
+}
